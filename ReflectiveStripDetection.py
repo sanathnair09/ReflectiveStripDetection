@@ -31,7 +31,7 @@ HUE = 60
 # HUE threshold (how much above and below the actual color we are trying to detect)
 THRESHOLD = 25
 
-lower_green = np.array([HUE-THRESHOLD, 100, 40])
+lower_green = np.array([HUE-THRESHOLD, 100, 100])
 upper_green = np.array([HUE+THRESHOLD, 225, 255])
 
 
@@ -76,12 +76,11 @@ while True:
                 M = cv.moments(cntr)
                 cX += int(M["m10"] / M["m00"])
                 cY += int(M["m01"] / M["m00"])
-
                 rect = cv.minAreaRect(cntr)
                 box = cv.boxPoints(rect)
                 box = np.int0(box)  # box[0] bottom most point
-                print(box[:, 0])
-                print(np.max(box[:, 0]) - np.min(box[:, 0]))
+                # print(box[:, 0])
+                # print(np.max(box[:, 0]) - np.min(box[:, 0]))
 
                 # cv.circle(mask, [box[0][0], box[0][1]], RADIUS, BBOX_COLOR, 5)
                 # cv.circle(mask, [box[1][0], box[1][1]], RADIUS, BBOX_COLOR, 2)
@@ -92,14 +91,15 @@ while True:
         cX = int(cX/len(filtered_contours))
         cY = int(cY/len(filtered_contours))
         center_coordinates = (cX, cY)
-        print(center_coordinates)
         # Using cv2.circle() method
         cv.circle(mask, center_coordinates, RADIUS, COLOR, THICKNESS)
 
     # showing what camera sees and output of HSV filtered frames
     # cv.imshow("original", frame)
-    cv.imshow("filtered", mask)
+    cv.imshow("hsv", hsv)
 
+    cv.imshow("filtered", mask)
+    cX, cY = 0, 0
     # kill if escape is pressed
     k = cv.waitKey(5) & 0xFF
     if k == 27:
