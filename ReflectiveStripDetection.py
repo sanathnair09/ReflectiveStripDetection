@@ -67,7 +67,7 @@ while True:
     filtered_contours = []
     cX, cY = 0, 0
     # making sure contour exists
-    if(len(contours) > 0):
+    if(len(contours) > 1):
         for cntr in contours:
             area = cv.contourArea(cntr)
             if (area > AREA_THRESHOLD):
@@ -80,19 +80,21 @@ while True:
                 rect = cv.minAreaRect(cntr)
                 box = cv.boxPoints(rect)
                 box = np.int0(box)  # box[0] bottom most point
+                print(box[:, 0])
+                print(np.max(box[:, 0]) - np.min(box[:, 0]))
+
+                # cv.circle(mask, [box[0][0], box[0][1]], RADIUS, BBOX_COLOR, 5)
+                # cv.circle(mask, [box[1][0], box[1][1]], RADIUS, BBOX_COLOR, 2)
 
                 cv.drawContours(mask, [box], 0, BBOX_COLOR, 4)
 
-    if len(filtered_contours) > 0:
+    if len(filtered_contours) > 1:
         cX = int(cX/len(filtered_contours))
         cY = int(cY/len(filtered_contours))
         center_coordinates = (cX, cY)
-
+        print(center_coordinates)
         # Using cv2.circle() method
         cv.circle(mask, center_coordinates, RADIUS, COLOR, THICKNESS)
-
-    print(f"centerX: {0}".format(cX))
-    print(f"centerY: {0}".format(cY))
 
     # showing what camera sees and output of HSV filtered frames
     # cv.imshow("original", frame)
