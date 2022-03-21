@@ -25,6 +25,9 @@ THRESHOLD = 25
 lower_green = np.array([HUE-THRESHOLD, 100, 100])
 upper_green = np.array([HUE+THRESHOLD, 225, 255])
 
+UDP_ID = "10.40.79.2"
+UDP_PORT=5805
+
 while True:
     # get frame from camera
     _, frame = cap.read()
