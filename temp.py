@@ -11,9 +11,9 @@ THICKNESS = -1
 
 
 class Temp:
-    def __init__(self,  cap: any, frame_width: float, frame_height: float, hsv_lower: np.ndarray,
-                 hsv_upper: np.ndarray, tracker_width: float, tracker_height: float,
-                 area_threshold_min=400, area_threshold_max=400):
+    def __init__(self,  cap: any, frame_width, frame_height, hsv_lower,
+                 hsv_upper, tracker_width,
+                 area_threshold_min=200, area_threshold_max=1000):
         # camera info
         self.cap = cap
         self.FRAME_WIDTH = frame_width  # float `width`
@@ -30,14 +30,13 @@ class Temp:
 
         # tracker info
         self.tracker_width = tracker_width
-        self.tracker_height = tracker_height
 
         # self.focalLength = 1410
 
     def perioidic(self):
-        center_coords, pxWidth = self.findTarget()
+        target_coords, pxWidth = self.findTarget(True)
         distanceToTarget = self.distanceToObject(pxWidth=pxWidth)
-        angleToTurn = self.angleToTurn(center_coords[0], distanceToTarget)
+        angleToTurn = self.angleToTurn(target_coords[0], distanceToTarget)
         return angleToTurn, distanceToTarget
 
     def findTarget(self, display=False):
@@ -109,8 +108,23 @@ class Temp:
     def calibrateCamera(self, knownDistance, repeatCount=10):
         perceivedFocalLength = 0
         for _ in range(repeatCount):
-            _, pxWidth = self.findTarget(pixel_Width=True)
+            _, pxWidth = self.findTarget()
             perceivedFocalLength += (pxWidth *
                                      knownDistance) / self.tracker_width
         self.focalLength = perceivedFocalLength
         return perceivedFocalLength/repeatCount
+
+
+cap = cv2.VideoCapture(0)
+
+HUE = 100
+THRESHOLD = 25
+
+lower_green = np.array([HUE-THRESHOLD, 100, 40])
+upper_green = np.array([HUE+THRESHOLD, 225, 255])
+
+
+detect = Temp(cap, cap.get(3), cap.get(4),  lower_green, upper_green, 5)
+detect.calibrateCamera(9.25)
+while(True):
+    angle, dist = detect.periodic()

@@ -1,5 +1,5 @@
 import math
-from tkinter import NE
+# from tkinter import NE
 import numpy as np
 
 
