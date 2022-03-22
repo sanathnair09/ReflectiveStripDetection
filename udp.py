@@ -60,7 +60,12 @@ while True:
         center_coordinates = (cX, cY)
         print(center_coordinates)
 
-    MESSAGE=f"{cX}:{cY}"
     sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-    sock.sendto(bytes(MESSAGE), (UDP_IP, UDP_PORT))
-    cX, cY = 0, 0
+    info = (UDP_IP, UDP_PORT)
+    sock.bind(info)
+    data, addr = sock.recvfrom(1024)  # buffer size is 1024 bytes
+    print("received message: %s" % data)
+
+    # MESSAGE=f"{cX}:{cY}"
+    # sock.sendto(bytes(MESSAGE), info)
+    # cX, cY = 0, 0
