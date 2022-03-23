@@ -4,7 +4,7 @@ import java.net.InetAddress;
 
 public class Test {
     private int PORT = 8080;
-    private String SEND_IP = "192.168.86.27";
+    private String SEND_IP = "192.168.1.18";
 
     private DatagramSocket udpSocket;
 
@@ -43,15 +43,13 @@ public class Test {
 
     public void sendUDPStuff() {
         try {
-            byte[] buffer = new String("Hello Nano").getBytes();
+            byte[] buffer = new String("GET").getBytes();
             InetAddress address = InetAddress.getByName(this.SEND_IP);
             System.out.println("address: " + address + " length: " + buffer.length);
             DatagramPacket request = null;
-            while (true) {
-                request = new DatagramPacket(buffer, buffer.length, address, this.PORT);
-                System.out.println("data: " + request.getData());
-                udpSocket.send(request);
-            }
+            request = new DatagramPacket(buffer, buffer.length, address, this.PORT);
+            udpSocket.send(request);
+
         } catch (Exception e) {
             System.out.println(e);
         }

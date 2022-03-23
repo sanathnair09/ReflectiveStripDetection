@@ -1,8 +1,9 @@
+import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
         Test test = new Test();
-        // test.sendUDPStuff();
+        test.sendUDPStuff();
         Thread thread = new Thread(new Runnable() {
             @Override
             public void run() {
@@ -11,6 +12,7 @@ public class Main {
             }
         });
         thread.start();
-
+        Scanner sc = new Scanner(System.in);
+        String stuff = sc.nextLine();
     }
 }
