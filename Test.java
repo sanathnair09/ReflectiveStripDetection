@@ -11,6 +11,8 @@ public class Test {
     public Test() {
         try {
             udpSocket = new DatagramSocket(this.PORT);
+            System.out.println("stuff made");
+
         } catch (Exception e) {
             // TODO: handle exception
             System.out.println("error: " + e);
@@ -23,6 +25,8 @@ public class Test {
             byte[] buffer = new byte[2048];
             DatagramPacket packet = null;
             while (true) {
+                System.out.println("stuff working");
+
                 packet = new DatagramPacket(buffer, buffer.length);
 
                 // Step 3 : revieve the data in byte buffer.
